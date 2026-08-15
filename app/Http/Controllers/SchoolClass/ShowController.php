@@ -3,15 +3,46 @@
 namespace App\Http\Controllers\SchoolClass;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class ShowController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request)
+    public function __invoke(string $id)
     {
-        return "ini adalah halaman detail class";
+        $title = "Sistem Sekolah - Detail Kelas";
+
+        $classes = [
+            [
+                'id' => 1,
+                'name' => 'XII AKL 1',
+                'grade' => 'XII',
+                'major' => 'AKL',
+                'homeroom_teacher' => 'Budi Santoso'
+            ],
+            [
+                'id' => 2,
+                'name' => 'XII TKJ 1',
+                'grade' => 'XII',
+                'major' => 'TKJ',
+                'homeroom_teacher' => 'Siti Aminah'
+            ]
+        ];
+
+        $class = null;
+
+        foreach ($classes as $data) {
+            if ($data['id'] == $id) {
+                $class = $data;
+                break;
+            }
+        }
+
+        if ($class == null) {
+            abort(404);
+        }
+
+        return view('school_class.show', [
+            'title' => $title,
+            'class' => $class
+        ]);
     }
 }

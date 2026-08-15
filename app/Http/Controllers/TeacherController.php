@@ -6,38 +6,91 @@ use Illuminate\Http\Request;
 
 class TeacherController extends Controller
 {
-     public function index()
+    private function getTeachers()
     {
-        return "ini adalah halaman daftar Guru";
+        return [
+            [
+                'id' => 1,
+                'nip' => '198501012024',
+                'name' => 'Budi Santoso',
+                'gender' => 'Laki-Laki',
+                'subject' => 'Akuntansi Dasar',
+                'phone' => '081234560001',
+                'status' => 'Aktif'
+            ],
+
+            [
+                'id' => 2,
+                'nip' => '198703152024',
+                'name' => 'Siti Aminah',
+                'gender' => 'Perempuan',
+                'subject' => 'Jaringan Komputer',
+                'phone' => '081234560002',
+                'status' => 'Aktif'
+            ]
+        ];
     }
 
-    public function show()
+    public function index()
     {
-        return "ini adalah halaman detail Guru";
+        $title = "Sistem Sekolah - Daftar Guru";
+        $teachers = $this->getTeachers();
+
+        return view('teachers.index', [
+            'title' => $title,
+            'teachers' => $teachers
+        ]);
+    }
+
+    public function show(string $id)
+    {
+        $title = "Sistem Sekolah - Detail Guru";
+
+        $teachers = $this->getTeachers();
+
+        $teacher = collect($teachers)->firstWhere('id', (int) $id);
+
+        return view('teachers.show', [
+            'title' => $title,
+            'teacher' => $teacher
+        ]);
     }
 
     public function create()
     {
-        return "ini adalah halaman tambah Guru";
+        $title = "Sistem Sekolah - Tambah Guru";
+
+        return view('teachers.create', [
+            'title' => $title
+        ]);
     }
-    
+
     public function edit(string $id)
     {
-        return "ini adalah halaman edit Guru dengan ID: {$id}";
+        $title = "Sistem Sekolah - Edit Guru";
+
+        $teachers = $this->getTeachers();
+
+        $teacher = collect($teachers)->firstWhere('id', (int) $id);
+
+        return view('teachers.edit', [
+            'title' => $title,
+            'teacher' => $teacher
+        ]);
     }
 
     public function store()
     {
-        return "Menambah data Guru baru";
+        return "Menambah data guru baru";
     }
 
     public function update(string $id)
     {
-        return "Mengubah data Guru dengan ID: {$id}";
+        return "Mengubah data guru dengan ID: {$id}";
     }
 
     public function destroy(string $id)
     {
-        return "Menghapus data Guru dengan ID: {$id}";
+        return "Menghapus data guru dengan ID: {$id}";
     }
 }

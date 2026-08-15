@@ -6,59 +6,113 @@ use Illuminate\Http\Request;
 
 class MajorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    private function getMajors()
+    {
+        return [
+            [
+                'id' => 1,
+                'code' => 'AKL',
+                'name' => 'Akuntansi dan Keuangan Lembaga',
+                'description' => 'Mempelajari akuntansi, keuangan, dan pengelolaan administrasi keuangan.'
+            ],
+            [
+                'id' => 2,
+                'code' => 'TKJ',
+                'name' => 'Teknik Komputer dan Jaringan',
+                'description' => 'Mempelajari komputer, jaringan, sistem operasi, dan teknologi informasi.'
+            ],
+            [
+                'id' => 3,
+                'code' => 'BD',
+                'name' => 'Bisnis Digital',
+                'description' => 'Mempelajari bisnis, pemasaran digital, dan pengelolaan bisnis berbasis teknologi.'
+            ]
+        ];
+    }
+
     public function index()
     {
-        return "ini adalah halaman daftar siswa";
+        $title = "Sistem Sekolah - Daftar Jurusan";
+
+        $majors = $this->getMajors();
+
+        return view('majors.index', [
+            'title' => $title,
+            'majors' => $majors
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return "ini adalah halaman tambah Guru";
+        $title = "Sistem Sekolah - Tambah Jurusan";
+
+        return view('majors.create', [
+            'title' => $title
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-         return "Menambah data siswa baru";
+        return "Menambah data jurusan baru";
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(string $major)
     {
-        return "ini adalah halaman detail Guru";
+        $title = "Sistem Sekolah - Detail Jurusan";
+
+        $majors = $this->getMajors();
+
+        $majorData = null;
+
+        foreach ($majors as $data) {
+            if ($data['id'] == $major) {
+                $majorData = $data;
+                break;
+            }
+        }
+
+        if ($majorData == null) {
+            abort(404);
+        }
+
+        return view('majors.show', [
+            'title' => $title,
+            'major' => $majorData
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(string $major)
     {
-        return "ini adalah halaman edit siswa dengan ID: {$id}";
+        $title = "Sistem Sekolah - Edit Jurusan";
+
+        $majors = $this->getMajors();
+
+        $majorData = null;
+
+        foreach ($majors as $data) {
+            if ($data['id'] == $major) {
+                $majorData = $data;
+                break;
+            }
+        }
+
+        if ($majorData == null) {
+            abort(404);
+        }
+
+        return view('majors.edit', [
+            'title' => $title,
+            'major' => $majorData
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $major)
     {
-        return "Mengubah data siswa dengan ID: {$id}";
+        return "Mengubah data jurusan dengan ID: {$major}";
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(string $major)
     {
-       return "Menghapus data Guru dengan ID: {$id}";
+        return "Menghapus data jurusan dengan ID: {$major}";
     }
 }
